@@ -89,6 +89,12 @@ docker-release: ## Release the container with tag latest and version
 	docker push $(DOCKER_REGISTRY)$(BINARY_NAME):latest
 	docker push $(DOCKER_REGISTRY)$(BINARY_NAME):$(VERSION)
 
+docker-up: ## Docker compose up
+	docker-compose up --build -d
+
+docker-down: ## Docker compose down
+	docker-compose down
+
 ## Run:
 run: vendor ## Run the app locally
 	$(GOCMD) run cmd/main.go
