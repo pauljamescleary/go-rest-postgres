@@ -19,7 +19,7 @@ RESET  := $(shell tput -Txterm sgr0)
 all: help
 
 ## Build:
-build: ## Build your project and put the output binary in out/bin/
+build: vendor ## Build your project and put the output binary in out/bin/
 	mkdir -p out/bin
 	GO111MODULE=on $(GOCMD) build -mod vendor -o out/bin/$(BINARY_NAME) cmd/main.go
 
@@ -90,7 +90,7 @@ docker-release: ## Release the container with tag latest and version
 	docker push $(DOCKER_REGISTRY)$(BINARY_NAME):$(VERSION)
 
 ## Run:
-run: ## Run the app locally
+run: vendor ## Run the app locally
 	$(GOCMD) run cmd/main.go
 
 ## Help:
