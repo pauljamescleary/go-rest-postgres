@@ -21,7 +21,7 @@ all: help
 ## Build:
 build: ## Build your project and put the output binary in out/bin/
 	mkdir -p out/bin
-	GO111MODULE=on $(GOCMD) build -mod vendor -o out/bin/$(BINARY_NAME) .
+	GO111MODULE=on $(GOCMD) build -mod vendor -o out/bin/$(BINARY_NAME) cmd/main.go
 
 clean: ## Remove build related file
 	rm -fr ./bin
@@ -88,6 +88,10 @@ docker-release: ## Release the container with tag latest and version
 	# Push the docker images
 	docker push $(DOCKER_REGISTRY)$(BINARY_NAME):latest
 	docker push $(DOCKER_REGISTRY)$(BINARY_NAME):$(VERSION)
+
+## Run:
+run: ## Run the app locally
+	$(GOCMD) run cmd/main.go
 
 ## Help:
 help: ## Show this help.
