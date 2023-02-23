@@ -104,7 +104,7 @@ db.update: ## Apply the schema to the database
 	atlas schema apply \
 	--auto-approve \
 	--url "postgres://user:password@localhost:5432/gomin?sslmode=disable" \
-	--to "file://schema.hcl" \
+	--to "file://database/schema.hcl" \
 	--dev-url "docker://postgres/15"
 
 ## Help:
