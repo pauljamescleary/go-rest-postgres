@@ -2,7 +2,7 @@ table "users" {
   schema = schema.public
   column "id" {
     null = false
-    type = serial
+    type = text
   }
   column "name" {
     null = false
@@ -10,11 +10,6 @@ table "users" {
   }
   primary_key {
     columns = [column.id]
-  }
-  index "users_name_idx" {
-    on {
-      column = "name"
-    }
   }
 }
 schema "public" {

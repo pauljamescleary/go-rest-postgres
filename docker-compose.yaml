@@ -15,13 +15,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  go:
-    container_name: go
-    build:
-      context: .
-    depends_on:
-      postgres:
-        condition: service_healthy # waiting until heathcheck of postgres is good
-    ports:
-      - "3000:3000"

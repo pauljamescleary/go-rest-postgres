@@ -1,8 +1,10 @@
 package models
 
-type (
-	User struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
-	}
+import (
+	"github.com/google/uuid"
 )
+
+type User struct {
+	ID   uuid.UUID `json:"id,omitempty"`
+	Name string    `json:"name"`
+}

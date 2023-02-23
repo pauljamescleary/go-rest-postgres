@@ -99,6 +99,14 @@ docker-down: ## Docker compose down
 run: vendor ## Run the app locally
 	$(GOCMD) run cmd/main.go
 
+## Database
+db.update: ## Apply the schema to the database
+	atlas schema apply \
+	--auto-approve \
+	--url "postgres://user:password@localhost:5432/gomin?sslmode=disable" \
+	--to "file://schema.hcl" \
+	--dev-url "docker://postgres/15"
+
 ## Help:
 help: ## Show this help.
 	@echo ''
