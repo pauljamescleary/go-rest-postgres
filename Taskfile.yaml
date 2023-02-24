@@ -7,6 +7,7 @@ tasks:
   build:
     cmds:
       - mkdir -p out/bin
+      - cp cmd/config.yaml out/bin
       - go build -mod vendor -o out/bin/gomin cmd/main.go
 
   clean:
@@ -44,7 +45,7 @@ tasks:
   server.run:
     deps: [db.migrate,build]
     cmds:
-      - ./out/bin/gomin
+      - ./out/bin/gomin -configpath "{{ .TASKFILE_DIR }}/out/bin/config.yaml"
     env:
       APP_DB_URL: "postgres://test:test@localhost:5435/gomin"
       APP_PORT: 1323

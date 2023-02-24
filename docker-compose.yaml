@@ -26,5 +26,7 @@ services:
       - '1323:1323'
     restart: always
     environment:
+      # Must be prefixed with APP_
+      # See pkg/common/config/config.go and viper for more details
       - APP_DB_URL=postgres://test:test@gomin_db:5432/gomin
       - APP_PORT=1323

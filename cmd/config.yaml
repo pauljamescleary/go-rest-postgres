@@ -1,0 +1,2 @@
+PORT: 1323
+DB_URL: postgres://test:test@localhost:5435/gomin

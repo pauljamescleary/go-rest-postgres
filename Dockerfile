@@ -24,6 +24,7 @@ FROM alpine
 # Copy our static executable.
 RUN apk update && apk add --no-cache  vips-dev
 COPY --from=builder /go/bin/app /go/bin/app
+COPY --from=builder /src/app/cmd/config.yaml /go/bin
 
 # Run the hello binary.
-ENTRYPOINT ["/go/bin/app"]
+ENTRYPOINT ["/go/bin/app", "-configpath=/go/bin/config.yaml"]
