@@ -18,7 +18,7 @@ tasks:
 
   d.build:
     cmds:
-      - docker build -t ghcr.io/pauljamescleary/gomin:latest --build-arg ENV=$APP_ENV .
+      - docker build -t ghcr.io/pauljamescleary/gomin:latest .
 
   d.down:
     cmds:
