@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/pauljamescleary/gomin/pkg/common/config"
 	"github.com/pauljamescleary/gomin/pkg/common/db"
 	"github.com/pauljamescleary/gomin/pkg/common/handler"
@@ -17,6 +19,8 @@ func main() {
 	e.Use(middleware.Recover())
 
 	cfg, _ := config.LoadConfig()
+	fmt.Printf("*** DB URL %s", cfg.DbUrl)
+
 	database := db.NewDatabase(cfg)
 	userRepo, _ := db.NewUserRepository(database)
 	handler := handler.NewHandler(userRepo)

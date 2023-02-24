@@ -1,0 +1,55 @@
+version: '3'
+env:
+  APP_ENV: dev
+  DATABASE_URL: '{{.DATABASE_URL | default "postgres://test:test@localhost:5435/gomin?sslmode=disable"}}'
+
+tasks:
+  build:
+    cmds:
+      - mkdir -p out/bin
+      - go build -mod vendor -o out/bin/gomin cmd/main.go
+
+  clean:
+    cmds:
+      - rm -fr ./bin
+      - rm -fr ./out
+      - rm -f ./junit-report.xml checkstyle-report.xml ./coverage.xml ./profile.cov yamllint-checkstyle.xml
+
+  d.build:
+    cmds:
+      - docker build -t ghcr.io/pauljamescleary/gomin:latest --build-arg ENV=$APP_ENV .
+
+  d.down:
+    cmds:
+      - docker-compose down
+
+  d.up:
+    cmds:
+      - docker-compose up -d --build
+
+  db.migrate:
+    deps: [db.up]
+    cmds:
+      - |
+        atlas schema apply \
+        --auto-approve \
+        --url "$DATABASE_URL" \
+        --to "file://database/schema.hcl" \
+        --dev-url "docker://postgres/15"
+
+  db.up:
+    cmds:
+      - docker-compose up -d db
+
+  server.run:
+    deps: [db.migrate,build]
+    cmds:
+      - ./out/bin/gomin
+    env:
+      APP_DB_URL: "postgres://test:test@localhost:5435/gomin"
+      APP_PORT: 1323
+
+  test:
+    cmds:
+      - (rm /tmp/unit_coverage.out || echo "Deleted Old files")
+      - go test -mod=mod -v  -coverprofile  /tmp/unit_coverage.out ./...
