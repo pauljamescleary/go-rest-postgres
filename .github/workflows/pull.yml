@@ -32,6 +32,11 @@ jobs:
         echo "$(dirname $GITHUB_WORKSPACE)/bin" >> $GITHUB_PATH
       shell: bash
 
+    - name: Set build variables
+      run: |
+        echo "GOPROXY=https://proxy.golang.org" >> $GITHUB_ENV
+        echo "GO111MODULE=on" >> $GITHUB_ENV
+
     - name: Run tests
       run: |
         go get -v ./...
