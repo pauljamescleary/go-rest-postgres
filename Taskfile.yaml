@@ -62,4 +62,5 @@ tasks:
   test:
     cmds:
       - (rm /tmp/unit_coverage.out || echo "Deleted Old files")
+      - go mod vendor
       - go test -test.v ./...
