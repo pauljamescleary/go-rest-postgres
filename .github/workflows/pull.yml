@@ -39,5 +39,6 @@ jobs:
 
     - name: Run tests
       run: |
+        go mod tidy
         go get -v ./...
         go test -test.v ./...
