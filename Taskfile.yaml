@@ -5,30 +5,36 @@ env:
 
 tasks:
   build:
+    desc: Builds a local executable, outputs to out/bin/gomin
     cmds:
       - mkdir -p out/bin
       - cp cmd/config.yaml out/bin
       - go build -mod vendor -o out/bin/gomin cmd/main.go
 
   clean:
+    desc: Cleans up build artifacts, including out, bin, and test reports
     cmds:
       - rm -fr ./bin
       - rm -fr ./out
       - rm -f ./junit-report.xml checkstyle-report.xml ./coverage.xml ./profile.cov yamllint-checkstyle.xml
 
   d.build:
+    desc: Builds the docker iamge, marks it as latest
     cmds:
       - docker build -t ghcr.io/pauljamescleary/gomin:latest .
 
   d.down:
+    desc: Shuts down all docker containers in the docker compose file
     cmds:
       - docker-compose down
 
   d.up:
+    desc: Starts up all docker containers, builds and runs the API as well
     cmds:
       - docker-compose up -d --build
 
   db.migrate:
+    desc: Runs the database migration, ensures that the local postgres database is running
     deps: [db.up]
     cmds:
       - |
@@ -38,20 +44,13 @@ tasks:
         --to "file://database/schema.hcl" \
         --dev-url "docker://postgres/15"
 
-  db.update:
-      cmds:
-        - |
-          atlas schema apply \
-          --auto-approve \
-          --url "$DATABASE_URL" \
-          --to "file://database/schema.hcl" \
-          --dev-url "docker://postgres/15"
-
   db.up:
+    desc: Starts the database WITHOUT migrations
     cmds:
       - docker-compose up -d db
 
   server.run:
+    desc: Starts the database, runs migrations, builds the server, and starts the server
     deps: [db.migrate,build]
     cmds:
       - ./out/bin/gomin -configpath "{{ .TASKFILE_DIR }}/out/bin/config.yaml"
@@ -60,6 +59,7 @@ tasks:
       APP_PORT: 1323
 
   test:
+    desc: Runs all of the tests in all of the go source directories
     cmds:
       - (rm /tmp/unit_coverage.out || echo "Deleted Old files")
       - go mod vendor

@@ -10,15 +10,15 @@
 
 This project uses [Taskfile](https://taskfile.dev/) for running tasks.  The following tasks are available
 
-- `task build` - creates the executable storing it in `out/bin` directory along with the config file
-- `task clean` - cleans various build artifacts
-- `task d.build` - builds the docker container
-- `task d.down` - shuts down the docker containers
-- `task d.up` - starts up the docker containers (postgres + gomin api)
-- `task db.migrate` - useful when changing the `database/schema.hcl` file, applies changes to the local database
-- `task db.up` - useful for ONLY starting the database (not the api)
-- `task server.run` - runs the code locally (not using docker)
-- `task test` - runs tests including coverage
+* build:            Builds a local executable, outputs to out/bin/gomin
+* clean:            Cleans up build artifacts, including out, bin, and test reports
+* d.build:          Builds the docker iamge, marks it as latest
+* d.down:           Shuts down all docker containers in the docker compose file
+* d.up:             Starts up all docker containers, builds and runs the API as well
+* db.migrate:       Runs the database migration, ensures that the local postgres database is running
+* db.up:            Starts the database WITHOUT migrations
+* server.run:       Starts the database, runs migrations, builds the server, and starts the server
+* test:             Runs all of the tests in all of the go source directories
 
 ## Roadmap
 
@@ -27,9 +27,9 @@ This project uses [Taskfile](https://taskfile.dev/) for running tasks.  The foll
 3. [x] - Add pre-commit
 4. [x] - Initial database setup
 5. [x] - Incorpoate database into REST API
-6. [ ] - Integration tests for database
-7. [ ] - E2E tests for REST API
-8. [ ] - Add github build for golang
+6. [x] - Integration tests for database
+7. [x] - E2E tests for REST API
+8. [x] - Add github build for golang
 9. [x] - Add docker packaging
 10. [ ] - Add docker image build in Github Actions on Tag
 11. [ ] - Terraform plan for RDS
