@@ -42,6 +42,8 @@ jobs:
     - name: Install atlas
       run: |
         curl -s https://release.ariga.io/atlas/atlas-linux-amd64-latest --output atlas.deb
+        pwd
+        ls -al
         sudo apt install ./atlas.deb
 
     - name: Migrate db
