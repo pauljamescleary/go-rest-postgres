@@ -12,6 +12,21 @@ on:
 jobs:
 
   build:
+    services:
+      postgres15:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_DB: gomin
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5435:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -23,9 +38,6 @@ jobs:
 
     - name: Install Task
       uses: arduino/setup-task@v1
-
-    - name: Start database
-      run: task db.up
 
     - uses: ariga/atlas-action@v0
       with:
