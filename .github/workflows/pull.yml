@@ -12,20 +12,20 @@ on:
 jobs:
 
   build:
-    services:
-      postgres15:
-        image: postgres:15
-        env:
-          POSTGRES_USER: test
-          POSTGRES_DB: gomin
-          POSTGRES_PASSWORD: test
-        ports:
-          - 5435:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   postgres15:
+    #     image: postgres:15
+    #     env:
+    #       POSTGRES_USER: test
+    #       POSTGRES_DB: gomin
+    #       POSTGRES_PASSWORD: test
+    #     ports:
+    #       - 5435:5432
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
     runs-on: ubuntu-latest
     steps:
@@ -39,11 +39,11 @@ jobs:
     - name: Install Task
       uses: arduino/setup-task@v1
 
+    - name: Start database
+      run: task db.up
+
     - name: Update database
       run: docker-compose up migrate
-
-    - name: Migrate db
-      run: task db.update
 
     - name: Test
       run: task test

@@ -18,6 +18,8 @@ services:
 
   migrate:
     container_name: gomin_migrate
+    depends_on:
+      - db
     image: arigaio/atlas:latest
     volumes:
       - "./database:/tmp/database"
