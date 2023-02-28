@@ -41,8 +41,8 @@ jobs:
 
     - name: Install atlas
       run: |
-        set('git_tty', false);
-        curl -sSf https://atlasgo.sh | sh
+        curl -s https://release.ariga.io/atlas/atlas-linux-amd64-latest -output atlas.deb
+        sudo apt install ./atlas.deb
 
     - name: Migrate db
       run: task db.update
