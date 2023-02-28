@@ -1,9 +1,6 @@
 package config
 
 import (
-	"flag"
-	"os"
-
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 )
@@ -13,18 +10,7 @@ type Config struct {
 	DbUrl string `mapstructure:"DB_URL"`
 }
 
-func LoadConfig() (c Config, err error) {
-	// Assumes a configpath Flag passed into our application
-	configPath := flag.String("configpath", "", "Config Path")
-	flag.Parse()
-	if configPath == nil || len(*configPath) == 0 {
-		log.Fatal().Msgf("Unable to load config path. Empty Path specified. ")
-	}
-	if _, err := os.Stat(*configPath); os.IsNotExist(err) {
-		// path/to/whatever does not exist
-		log.Fatal().Msgf("Unable to load config path. Path not found. ")
-	}
-
+func LoadConfig(configPath *string) (c Config, err error) {
 	// Actually load in the config file from the path provided
 	viper.SetConfigFile(*configPath)
 	viper.SetConfigType("yaml")
