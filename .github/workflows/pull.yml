@@ -40,7 +40,9 @@ jobs:
       uses: arduino/setup-task@v1
 
     - name: Install atlas
-      run: curl -sSf https://atlasgo.sh | sh
+      run: |
+        set('git_tty', false);
+        curl -sSf https://atlasgo.sh | sh
 
     - name: Migrate db
       run: task db.update
