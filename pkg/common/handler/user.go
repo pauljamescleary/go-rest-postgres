@@ -21,3 +21,17 @@ func (h *Handler) CreateUser(c echo.Context) error {
 	}
 	return c.JSON(http.StatusCreated, newUser)
 }
+
+func (h *Handler) GetUser(c echo.Context) error {
+	id := c.Param("id")
+	user, err := h.UserRepo.GetUser(id)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	if user == nil {
+		return c.JSON(http.StatusNotFound, id)
+	}
+
+	return c.JSON(http.StatusOK, user)
+}

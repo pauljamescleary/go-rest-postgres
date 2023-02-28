@@ -3,6 +3,8 @@ package db
 import (
 	"context"
 
+	pgxuuid "github.com/jackc/pgx-gofrs-uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/pauljamescleary/gomin/pkg/common/config"
 	"github.com/rs/zerolog/log"
@@ -24,6 +26,13 @@ func NewPgConnectionPool(c config.Config) (*pgxpool.Pool, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// Register UUID support
+	dbConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
+		pgxuuid.Register(conn.TypeMap())
+		return nil
+	}
+
 	conn, err := pgxpool.NewWithConfig(context.Background(), dbConfig)
 	if err != nil {
 		return nil, err

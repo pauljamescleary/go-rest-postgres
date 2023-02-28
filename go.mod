@@ -3,7 +3,9 @@ module github.com/pauljamescleary/gomin
 go 1.20
 
 require (
+	github.com/georgysavva/scany/v2 v2.0.0
 	github.com/google/uuid v1.3.0
+	github.com/jackc/pgx-gofrs-uuid v0.0.0-20230224015001-1d428863c2e2
 	github.com/jackc/pgx/v5 v5.3.0
 	github.com/labstack/echo/v4 v4.10.1
 	github.com/rs/zerolog v1.29.0
@@ -14,6 +16,7 @@ require (
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/gofrs/uuid/v5 v5.0.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
