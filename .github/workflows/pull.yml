@@ -39,11 +39,11 @@ jobs:
     - name: Install Task
       uses: arduino/setup-task@v1
 
-    - uses: ariga/atlas-action@v0
-      with:
-        dir: database
-        dir-format: atlas
-        dev-url: postgres://test:test@localhost:5435/gomin?sslmode=disable
+    - name: Install atlas
+      run: curl -sSf https://atlasgo.sh | sh
+
+    - name: Migrate db
+      run: task db.update
 
     - name: Test
       run: task test
