@@ -39,12 +39,8 @@ jobs:
     - name: Install Task
       uses: arduino/setup-task@v1
 
-    - name: Install atlas
-      run: |
-        curl -s https://release.ariga.io/atlas/atlas-linux-amd64-latest --output atlas.deb
-        pwd
-        ls -al
-        sudo apt install ./atlas.deb
+    - name: Update database
+      run: docker-compose up migrate
 
     - name: Migrate db
       run: task db.update
