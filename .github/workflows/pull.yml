@@ -1,0 +1,32 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Pull Request
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Golang
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.20'
+
+    - uses: actions/checkout@v3
+
+    - name: Start database and migrate
+      run: |
+        docker-compose up -d db
+        docker-compose up migrate
+
+    - name: Run tests
+      run: |
+        go get -v ./...
+        go test -test.v ./...

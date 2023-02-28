@@ -38,6 +38,15 @@ tasks:
         --to "file://database/schema.hcl" \
         --dev-url "docker://postgres/15"
 
+  db.update:
+      cmds:
+        - |
+          atlas schema apply \
+          --auto-approve \
+          --url "$DATABASE_URL" \
+          --to "file://database/schema.hcl" \
+          --dev-url "docker://postgres/15"
+
   db.up:
     cmds:
       - docker-compose up -d db
@@ -53,4 +62,5 @@ tasks:
   test:
     cmds:
       - (rm /tmp/unit_coverage.out || echo "Deleted Old files")
+      - go mod vendor
       - go test -test.v ./...

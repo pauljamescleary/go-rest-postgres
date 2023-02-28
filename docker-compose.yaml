@@ -16,6 +16,20 @@ services:
       timeout: 5s
       retries: 5
 
+  migrate:
+    container_name: gomin_migrate
+    depends_on:
+      - db
+    image: arigaio/atlas:latest
+    volumes:
+      - "./database:/tmp/database"
+    command: >
+      schema apply \
+        --auto-approve \
+        --url "postgres://test:test@gomin_db:5432/gomin?sslmode=disable" \
+        --to "file://tmp/database/schema.hcl" \
+        --dev-url "postgres://test:test@gomin_db:5432/gomin?sslmode=disable"
+
   api:
     build:
       context: .

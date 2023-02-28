@@ -6,7 +6,7 @@ require (
 	github.com/georgysavva/scany/v2 v2.0.0
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgx-gofrs-uuid v0.0.0-20230224015001-1d428863c2e2
-	github.com/jackc/pgx/v5 v5.3.0
+	github.com/jackc/pgx/v5 v5.3.1
 	github.com/labstack/echo/v4 v4.10.1
 	github.com/rs/zerolog v1.29.0
 	github.com/spf13/viper v1.15.0
