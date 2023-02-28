@@ -12,38 +12,19 @@ on:
 jobs:
 
   build:
-    # services:
-    #   postgres15:
-    #     image: postgres:15
-    #     env:
-    #       POSTGRES_USER: test
-    #       POSTGRES_DB: gomin
-    #       POSTGRES_PASSWORD: test
-    #     ports:
-    #       - 5435:5432
-    #     options: >-
-    #       --health-cmd pg_isready
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Go
+    - name: Start database and migrate
+      run: |
+        docker-compose up -d db
+        docker-compose up migrate
+
+    - name: Run build and test
       uses: actions/setup-go@v3
       with:
         go-version: 1.20
-
-    - name: Install Task
-      uses: arduino/setup-task@v1
-
-    - name: Start database
-      run: task db.up
-
-    - name: Update database
-      run: docker-compose up migrate
-
-    - name: Test
-      run: task test
+      run: |
+        go mod vendor
+        go test -test.v ./...
