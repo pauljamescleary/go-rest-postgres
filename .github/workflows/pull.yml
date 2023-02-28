@@ -29,7 +29,7 @@ jobs:
 
     - uses: ariga/atlas-action@v0
       with:
-        dir: ${GITHUB_WORKSPACE}/database
+        dir: "$GITHUB_WORKSPACE/database"
         dir-format: atlas
         dev-url: postgres://test:test@localhost:5435/gomin?sslmode=disable
 
