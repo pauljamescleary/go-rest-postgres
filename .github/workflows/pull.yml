@@ -14,17 +14,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Install Golang
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.20
+
     - uses: actions/checkout@v3
 
     - name: Start database and migrate
       run: |
         docker-compose up -d db
         docker-compose up migrate
-
-    - name: Install Golang
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.20
 
     - name: Set GOPATH and PATH
       run: |
