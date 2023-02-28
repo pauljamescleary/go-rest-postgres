@@ -31,6 +31,7 @@ The author of this repository carries opinions about how to best organize an app
 ## Project Structure
 
 - `cmd` - this is where the default config and the main app lives
+- `database` - this is where the **schema.hcl** file lives.  Modify this file to alter the database
 - `pkg` - this is where most of the code lives
   - `common`
     - `config` - for loading the config file / incorporating environment variable overrides
