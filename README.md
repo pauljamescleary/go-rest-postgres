@@ -12,21 +12,30 @@ The application demonstrates:
 
 The author of this repository carries opinions about how to best organize an application / repository.  Those opinions / choices are described below:
 
-1. No ORM (Object Relational Mapper) - Golang has a few ORMs that are popular, in particular [GORM](https://gorm.io/) and [Ent](https://entgo.io/).
-   1. ORMs hide SQL, and SQL is already super declaritive and easy to read
-   2. ORMs typically require some schema setup, and code generation, and knowing what goes where
-   3. It can be difficult to optimize ORM SQL
-2. Echo for the REST API - There are a lot of http frameworks in the golang echosystem, including [Echo](https://echo.labstack.com/) and [Gin](https://gin-gonic.com/).  Echo seemed to provide a lot out of the box, including things like Auth.
-3. PGX for the database - `database/sql` would be fine as well, but PGX is PostgreSQL optimized and includes connection pooling.
-4. Taskfile instead of Makefile - There is nothing inherently wrong with Makefile, Taskfile is a reasonable alternative with simple, validatable YAML syntax
-5. Pre-commit - makes sure that users cannot commit / push code that isn't up to standards
+1. No ORM (Object Relational Mapper) - Golang has a few ORMs that are popular, in particular [GORM](https://gorm.io/) and [Ent](https://entgo.io/).  However, the mapping ability in tools like [Scany](https://github.com/georgysavva/scany) take care of a lot of tedious work of working with databases (mapping rows to structs).  Declaritive SQL in code (imo) is preferable to code generation and clunky SQL-esque APIs.
+2. [Atlas](https://atlasgo.io/) for database migrations.  There are 1000 ways to run migrations in golang, and unfortunately there doesn't seem to be a lot of consensus.  However, what I enjoy about Atlas is that it includes Terraform support and it allows you to define your schema in an HCL file and it magically figures out how to update your target database.  You can see this in `database/schema.hcl` and just a simple `atlas schema apply` and your database is now in sync.
+3. [Echo](https://echo.labstack.com/) for the REST API - There are a lot of http frameworks in the golang echosystem, including [Echo](https://echo.labstack.com/) and [Gin](https://gin-gonic.com/).  Honestly, I found using the docs with Echo simpler, but don't have a strong opinion on the web framework side.  `net/http` might be just as good as the other choices, `Gin` being pretty popular.
+4. [PGX](https://github.com/jackc/pgx) for database aaccess - `database/sql` would be fine as well, but PGX is PostgreSQL optimized and is a good choice when tied to Postgres.
+5. [Taskfile](https://taskfile.dev/) instead of Makefile - There is nothing inherently wrong with Makefile, Taskfile is a reasonable alternative with simple, validatable YAML syntax
+6. [Pre-commit](https://pre-commit.com/) - makes sure that users cannot commit / push code that isn't up to standards.  In this project we check formatting, linting, golang critic, among others to keep the repo tidy.
 
 ## Pre-requisites
 
 1. Install [Docker](https://docs.docker.com/get-docker/).  Used for testing
-2. Install [Pre-Commit](https://pre-commit.com/).  This project uses pre-commit to ensure code is all nice and tidy before others can see it.
-3. Install the pre-commit hooks by running `pre-commit install`
-4. Install [Atlas](https://atlasgo.io/getting-started).  Atlas is used for database migrations.  Note: you can skip this step and just rely on docker
+2. Install [Taskfile](https://taskfile.dev/), required to do pretty much anything
+3. Install [Pre-Commit](https://pre-commit.com/).  This project uses pre-commit to ensure code is all nice and tidy before others can see it.
+4. Install the pre-commit hooks by running `pre-commit install`
+5. Optionally install [Atlas](https://atlasgo.io/getting-started).  Atlas is used for database migrations.  **Note: you can skip this step and just rely on docker, as atlas is only needed to explore its abilities**
+
+## Quick Start
+
+Make sure you have Docker and Taskfile installed...
+
+1. Run `task server.run`
+   1. Starts up the postgres docker database
+   2. Runs migrations so the database is ready
+   3. Performs a build of the REST API
+   4. Starts the REST API on port 1323.  Access on http://localhost:1323
 
 ## Project Structure
 
@@ -44,21 +53,15 @@ The author of this repository carries opinions about how to best organize an app
 
 This project uses [Taskfile](https://taskfile.dev/) for running tasks.  The following tasks are available
 
-- `build`:            Builds a local executable, outputs to out/bin/gomin
-- `clean`:            Cleans up build artifacts, including out, bin, and test reports
-- `d.build`:          Builds the docker iamge, marks it as latest
-- `d.down`:           Shuts down all docker containers in the docker compose file
-- `d.up`:             Starts up all docker containers, builds and runs the API as well
-- `db.migrate`:       Runs the database migration, ensures that the local postgres database is running
-- `db.up`:            Starts the database WITHOUT migrations
-- `server.run`:       Starts the database, runs migrations, builds the server, and starts the server
-- `test`:             Runs all of the tests in all of the go source directories
-
-For some common tasks:
-
-- `task db.migrate` to start the local postgres database and run migrations to get the database current
-- `task server.run` ensures the database is running and builds and starts the rest server - it is available at http://localhost:1323
-- `task test` you must start the database first using `task db.migrate` and then you can run tests
+- `build` - Builds a local executable, outputs to out/bin/gomin
+- `clean` - Cleans up build artifacts, including out, bin, and test reports
+- `d.build` - Builds the docker iamge, marks it as latest
+- `d.down` - Shuts down all docker containers in the docker compose file
+- `d.up` - Starts up all docker containers, builds and runs the API as well
+- `db.migrate` - Runs the database migration, ensures that the local postgres database is running
+- `db.up` - Starts the database WITHOUT migrations
+- `server.run` - Starts the database, runs migrations, builds the server, and starts the server
+- `test` - Runs all of the tests in all of the go source directories
 
 ## Writing Tests
 
