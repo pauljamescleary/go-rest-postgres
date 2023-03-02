@@ -8,6 +8,32 @@ The application demonstrates:
 - `PostgreSQL integration` using [PGX](https://github.com/jackc/pgx)
 - `Database migrations` using [Atlas](https://atlasgo.io/)
 
+## Use as a Template
+
+**If you want to use this as a template, here a short guide:**
+
+1. Modify the `go.mod` file `module` to be the name of your project
+1. Modify the `database/schema.hcl` file to meet your database needs
+1. Modify the `docker-compose.yml` file to use the name of your project
+1. Modify `pkg/common/router/router` and add additional routes as needed
+1. Add your domain models to `pkg/common/models` directory
+1. Add your data access (repository) to the `pkg/common/db` directory
+
+**In general, when you introduce a new separate domain concept:**
+
+1. Update the `database/schema.hcl` file with new tables
+1. Create a new router `pkg/common/router/xxx.go`
+1. Create model types `pkg/common/models/xxx.go`
+1. Create a new repository `pkg/common/db/xxx.go`
+1. Update the main `pkg/common/router/router.go` file to use your new routes
+1. Add a new `pkg/common/router/xxx_test.go` file to test your new routes
+
+**If you want to add additional config entries:**
+
+1. Modify the `Config` struct in `pkg/common/config.go`
+2. Add a default (typically works locally) value in `cmd/config.yaml`
+3. Override the default value through an environment variable at runtime (i.e. not local) as needed
+
 ## Technology Choices
 
 The author of this repository carries opinions about how to best organize an application / repository.  Those opinions / choices are described below:
@@ -25,7 +51,7 @@ The author of this repository carries opinions about how to best organize an app
 2. Install [Taskfile](https://taskfile.dev/), required to do pretty much anything
 3. Install [Pre-Commit](https://pre-commit.com/).  This project uses pre-commit to ensure code is all nice and tidy before others can see it.
 4. Install the pre-commit hooks by running `pre-commit install`
-5. Optionally install [Atlas](https://atlasgo.io/getting-started).  Atlas is used for database migrations.  **Note: you can skip this step and just rely on docker, as atlas is only needed to explore its abilities**
+5. **Optionally** install [Atlas](https://atlasgo.io/getting-started).  Atlas is used for database migrations.  **Note: you can skip this step and just rely on docker, as atlas is only needed to explore its abilities**
 
 ## Quick Start
 
@@ -68,6 +94,10 @@ This project uses [Taskfile](https://taskfile.dev/) for running tasks.  The foll
 This project primarily uses _E2E_ tests hitting the API directly and using the docker postres database.
 
 Tests live in `pkg/common/router` - create a new `xxx_test.go` file as needed
+
+## Environment Variables and Config
+
+This project is setup to load a default config found in `cmd/config.yaml` that is overridable via **Environment Variables**.  For example, you can override the database url by setting an environment variable named `APP_DB_URL`.
 
 ## Roadmap
 
