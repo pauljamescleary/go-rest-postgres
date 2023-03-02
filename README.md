@@ -22,11 +22,11 @@ The application demonstrates:
 **In general, when you introduce a new separate domain concept:**
 
 1. Update the `database/schema.hcl` file with new tables
-1. Create a new router `pkg/common/router/xxx.go`
+1. Create a new route handler `pkg/common/handler/xxx.go`
 1. Create model types `pkg/common/models/xxx.go`
 1. Create a new repository `pkg/common/db/xxx.go`
-1. Update the main `pkg/common/router/router.go` file to use your new routes
-1. Add a new `pkg/common/router/xxx_test.go` file to test your new routes
+1. Update the main `pkg/common/router/router.go` file to use your new routes / handlers
+1. Add a new `pkg/common/router/xxx_test.go` file to test your new routes / handlers
 
 **If you want to add additional config entries:**
 
