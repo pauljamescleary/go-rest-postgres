@@ -110,7 +110,7 @@ This project is setup to load a default config found in `cmd/config.yaml` that i
 7. [x] - E2E tests for REST API
 8. [x] - Add github build for golang
 9. [x] - Add docker packaging
-10. [ ] - Add docker image build in Github Actions on Tag
+10. [x] - Add docker image build in Github Actions on Tag
 11. [ ] - Terraform plan for RDS
 12. [ ] - Terraform plan for ECS
 13. [ ] - Github Actions to run terraform and deploy to AWS
