@@ -44,3 +44,15 @@ func TestGetUser(t *testing.T) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 	}
 }
+func TestNoUserRecord(t *testing.T) {
+
+	req, rec := makeRequest(http.MethodGet, "/", nil)
+	c := testEchoContext.NewContext(req, rec)
+	c.SetPath("/users/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("")
+
+	if assert.NoError(t, testHandler.GetUser(c)) {
+		assert.Equal(t, http.StatusNotFound, rec.Code)
+	}
+}

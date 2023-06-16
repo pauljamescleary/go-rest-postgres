@@ -37,11 +37,11 @@ func (repo PostgresUserRepository) GetUser(id string) (*models.User, error) {
 	var user models.User
 	rows, err := repo.db.Conn.Query(context.Background(), sql, id)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	if err := pgxscan.ScanOne(&user, rows); err != nil {
-		panic(err)
+		return nil, nil
 	}
 
 	return &user, nil
